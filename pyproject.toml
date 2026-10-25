@@ -1,0 +1,12 @@
+[project]
+name = "44688-80-capstone"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "duckdb>=2.0.0",
+    "lightgbm>=4.7.0",
+    "matplotlib>=3.11.2",
+    "pandas>=3.1.0",
+    "scikit-learn>=1.9.1",
+    "streamlit>=1.66.1",
+]
