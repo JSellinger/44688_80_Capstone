@@ -1,0 +1,263 @@
+% This is samplepaper.tex, formatted for Springer LLNCS
+\documentclass[runningheads]{llncs}
+
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb} % Added for mathematical formulas
+\usepackage{hyperref}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\begin{document}
+
+% --- TITLE SETUP ---
+\title{Dynamic Inventory Risk \& Reorder Engine: An End-to-End Operational Analytics Pipeline}
+
+% Abbreviated title for page headers (keeps top header from overflowing)
+\titlerunning{Dynamic Inventory Risk \& Reorder Engine}
+
+% --- AUTHOR SETUP ---
+\author{Jacob C Sellinger }
+
+% Abbreviated author name for page headers (e.g., J. Smith)
+\authorrunning{Sellinger}
+
+\institute{Northwest Missouri State University, Maryville MO 64468, USA \\
+\email{S577258@nwmissouri.edu}}
+
+\maketitle              % Typesets the header block
+
+% --- ABSTRACT ---
+\begin{abstract}
+This capstone project presents an end-to-end data engineering and analytics pipeline designed to optimize supply chain inventory under lead-time uncertainty. By processing raw transactional data using DuckDB, predicting supplier lead times with machine learning, and calculating dynamic safety stock levels, the engine surfaces real-time stockout risks via an interactive Python Streamlit dashboard.
+
+
+%-- Keywords ---
+\keywords{Supply Chain Analytics \and Lead Time Prediction \and Dynamic Reorder Point \and DuckDB \and Streamlit.}
+\end{abstract}
+
+% --- MAIN CONTENT SCAFFOLDING ---
+
+\section{Introduction}
+Modern supply chains face significant volatility in lead times and demand. Traditional static reorder point models often fail under stochastic conditions, resulting in costly stockouts or excessive holding costs...
+
+\section{Methodology Overview}
+The system architecture consists of a three-stage pipeline: ingestion and cleaning (ETL), predictive lead time modeling, and interactive decision support...
+
+\subsection{Mathematical Formulations}
+To account for lead time variability ($\sigma_L$) and demand variability ($\sigma_d$), the dynamic Safety Stock ($SS$) and Reorder Point ($ROP$) are calculated as:
+
+\begin{equation}
+    SS = Z \times \sqrt{\bar{L} \cdot \sigma_d^2 + \bar{d}^2 \cdot \sigma_L^2}
+\end{equation}
+
+\begin{equation}
+    ROP = (\bar{d} \times \bar{L}) + SS
+\end{equation}
+
+Where $\bar{d}$ represents average daily demand, $\bar{L}$ is the predicted mean lead time, and $Z$ corresponds to the target service level factor.
+
+\section{Dataset}
+This will cover the dataset - it is important to note the data source, whether it is synthetic or natural, and the limitations of such a data source. It should also give an overview of the fields and columns of the dataset along with any other miscellaneous information that is pertinent to the project
+
+\section{Data Extraction}
+This will cover the exact method that was used to extract the data, whether I call it from a .py file and pull it directly in the way I need it, or I simply download it by hand and move it to the exact project file. It is simple, but vitally important should you want to recreate the project
+
+\section{Data Transformation}
+This will cover all transformations and the rationale behind the transformations - should I inject null values rather than dropping rows with null values, I should have a valid reason for the decisions and document it whether right or wrong
+
+\section{Data Loading}
+This will cover what I loaded my data into, whether I work directly from a .csv file or choose to load it to SQL or some other database. This choice should also be documented and there should be some rationale behind it.
+
+\section{ML Model Training}
+This will cover how I trained the machine learning model, the type of model, how it was trained, the rationale for the model chosen, and whether or not there are limitations to my choice and rationale
+
+\section{ML Model Evaluation}
+This will be the evaluation of my model to find specific limitations so that we can make inferences about when this model may fail, whether it be on edge cases or is even useful for deployment
+
+\section{Dashboard Development}
+To cover an E2E pipeline, we would need a way to interact with the model through some form of GUI - that way, the end-user can interact or at least see the data in a helpful visual format. In essence, the degree is more about analysis and presentation of data rather than my ability to code, so I view this as a vital part. This may also have another subsection about how the dashboard will be deployed
+
+\section{Integration And Testing}
+This will be a rather small section, but because this will likely be done piecemeal and modular, there will need to be some time spent on integration and to give a good overview of how the parts actually connect
+
+\section{Web Deployment}
+I believe a final, perhaps optional step, would be to deploy the project to the web - I would likely lack live-streamed data, but from an end-to-end view covering some form of hosting and deployment will be beneficial from a knowledge point of view and demonstration of skills.
+
+\section{Results and Analysis}
+This is the final part of the body paragraph where I will examine the results of my project and analyze how well it performs; we might simply perform an ad hoc evaluation or give it edge cases to see where it fails
+
+\section{Conclusion}
+This is the conclusion, broadly summarizing the work that was completed, the results, and analysis. This section should also at least have suggestions for more room for improvement, as that segue's directly into our limitations.
+
+\section{Limitations}
+While I will likely give limitations throughout the paper, having a limitations section at the end of the paper can summarize the found limitations and any other proposed larger limitations
+
+\end{document}
+
+\The below is part of the initial sample paper I took things from
+
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+The abstract should briefly summarize the contents of the paper in
+150--250 words. The abstract should briefly summarize the contents of the paper in
+150--250 words. The abstract should briefly summarize the contents of the paper in
+150--250 words. The abstract should briefly summarize the contents of the paper in
+150--250 words.
+
+\keywords{mobile computing \and mobile usability \and multimedia \and cloud computing}
+\end{abstract}
+%
+%
+%
+\section{Introduction}
+
+Please note that the first paragraph of a section or subsection is
+not indented. The first paragraph that follows a table, figure,
+equation etc. does not need an indent, either.
+
+Subsequent paragraphs, however, are indented.
+
+\subsection{Goals of this Research} 
+Specify exactly your aims of this paper. Also, write a sentence how you will address for each individual goal.
+
+\subsection{This is another subsection}
+Write something related to your paper.
+
+\section{Mobile Usability}
+
+
+\begin{table}
+\caption{Gas Prices}\label{gasprice}
+\begin{tabular}{|l|r|}
+\hline
+Month &  Price \\
+\hline
+Jan &  \$2.12 \\
+Feb &  0.12 \\
+Mar &  1.12 \\
+Apr &  2.12 \\
+May &  3.12 \\
+Jun &  1.12 \\
+
+\hline
+\end{tabular}
+\end{table}
+
+
+
+\begin{table}
+\caption{Table captions should be placed above the
+tables.}\label{tab1}
+\begin{tabular}{|l|l|l|}
+\hline
+Heading level &  Example & Font size and style\\
+\hline
+Title (centered) &  {\Large\bfseries Lecture Notes} & 14 point, bold\\
+1st-level heading &  {\large\bfseries 1 Introduction} & 12 point, bold\\
+2nd-level heading & {\bfseries 2.1 Printing Area} & 10 point, bold\\
+3rd-level heading & {\bfseries Run-in Heading in Bold.} Text follows & 10 point, bold\\
+4th-level heading & {\itshape Lowest Level Heading.} Text follows & 10 point, italic\\
+\hline
+\end{tabular}
+\end{table}
+
+
+The gasoline prices are summarized in Table \ref{gasprice}
+
+
+
+\noindent Displayed equations are centered and set on a separate
+line.
+\begin{equation}
+x + y = z
+\end{equation}
+Please try to avoid rasterized images for line-art diagrams and
+schemas. Whenever possible, use vector graphics instead (see
+Fig.~\ref{fig1}).
+
+\begin{figure}
+\includegraphics[width=\textwidth]{fig1.eps}
+\caption{A figure caption is always placed below the illustration.
+Please note that short captions are centered, while long ones are
+justified by the macro package automatically.} 
+\label{fig1}
+\end{figure}
+
+The detailed steps of the MEC is shown in Figure \ref{mecFig}.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{mecomputing.png}
+\caption{This is the MEC} 
+\label{mecFig}
+\end{figure}
+
+%\begin{theorem}
+%This is a sample theorem. The run-in heading is set in bold, while
+%the following text appears in italics. Definitions, lemmas,
+%propositions, and corollaries are styled the same way.
+%\end{theorem}
+%
+% the environments 'definition', 'lemma', 'proposition', 'corollary',
+% 'remark', and 'example' are defined in the LLNCS documentclass as well.
+%
+\begin{proof}
+Proofs, examples, and remarks have the initial word in italics,
+while the following text appears in normal font.
+\end{proof}
+
+
+The following are the items in my lunch menu.
+\begin{itemize}
+    \item Fish
+    \begin{itemize}
+        \item sauce
+        \item fires
+    \end{itemize}
+    \item Chicken
+    \item Yogurt
+    \item ice cream
+\end{itemize}
+
+The following are the steps to cook this recipe. 
+
+
+
+\begin{enumerate}
+\item Clean vessels
+\item Cook
+\begin{enumerate}
+    \item On the stove
+    \item Place the pan
+    \item Crack the egg
+\end{enumerate}
+\item Eat
+\end{enumerate}
+
+
+
+For citations of references, we prefer the use of square brackets
+and consecutive numbers. \cite{bariah2020prospective}, \cite{kato2020ten}.
+
+Now I am citing this article. \cite{hoehle2015mobile}
+
+citing now \cite{8766917}, \cite{10.5555/2667432.2667458}
+
+Now, I am using my sixth \cite{mao2017survey} citation.
+
+\cite{910896}
+
+\cite{*}
+
+%
+% ---- Bibliography ----
+%
+% BibTeX users should specify bibliography style 'splncs04'.
+% References will then be sorted and formatted in the correct style.
+%
+\bibliographystyle{splncs04}
+\bibliography{mybibliography}
+
+
+%
+
+\end{document}
