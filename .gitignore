@@ -1,0 +1,47 @@
+# ==========================================
+# LaTeX & MiKTeX Build Artifacts
+# ==========================================
+*.aux
+*.bbl
+*.blg
+*.idx
+*.ind
+*.lof
+*.lot
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.log
+DescriptionTexts.txt
+
+# TeX directory logs & preview files
+*_minted-*
+/latex_documents/*.pdf
+
+# ==========================================
+# Python & Environment Artifacts
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+.env
+
+# ==========================================
+# Database & Local Data Storage
+# ==========================================
+*.db
+*.sqlite
+*.wal
+data/inventory_warehouse.db
+
+# ==========================================
+# VS Code / OS Artifacts
+# ==========================================
+.vscode/
+.DS_Store
+Thumbs.db
