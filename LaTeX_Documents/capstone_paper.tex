@@ -26,6 +26,8 @@
 
 % --- ABSTRACT ---
 \begin{abstract}
+    WORK IN PROGRESS
+
 This capstone project presents an end-to-end data engineering and analytics pipeline designed to optimize supply chain inventory under lead-time uncertainty. By processing raw transactional data using DuckDB, predicting supplier lead times with machine learning, and calculating dynamic safety stock levels, the engine surfaces real-time stockout risks via an interactive Python Streamlit dashboard.
 
 
@@ -36,12 +38,19 @@ This capstone project presents an end-to-end data engineering and analytics pipe
 % --- MAIN CONTENT SCAFFOLDING ---
 
 \section{Introduction}
+WORK IN PROGRESS
+
 Modern supply chains face significant volatility in lead times and demand. Traditional static reorder point models often fail under stochastic conditions, resulting in costly stockouts or excessive holding costs...
 
 \section{Methodology Overview}
+WORK IN PROGRESS
+
 The system architecture consists of a three-stage pipeline: ingestion and cleaning (ETL), predictive lead time modeling, and interactive decision support...
 
 \subsection{Mathematical Formulations}
+
+WORK IN PROGRESS
+
 To account for lead time variability ($\sigma_L$) and demand variability ($\sigma_d$), the dynamic Safety Stock ($SS$) and Reorder Point ($ROP$) are calculated as:
 
 \begin{equation}
@@ -55,7 +64,8 @@ To account for lead time variability ($\sigma_L$) and demand variability ($\sigm
 Where $\bar{d}$ represents average daily demand, $\bar{L}$ is the predicted mean lead time, and $Z$ corresponds to the target service level factor.
 
 \section{Dataset}
-This will cover the dataset - it is important to note the data source, whether it is synthetic or natural, and the limitations of such a data source. It should also give an overview of the fields and columns of the dataset along with any other miscellaneous information that is pertinent to the project
+The data set that will be used in this project is version 5 of the \textit{DataCo SMART SUPPLY CHAIN FOR BIG DATA ANALYSIS} from Mendeley Data. \cite{dataco2019} This data set is a comprehensive supply chain data set that covers procurement, production, sales, and commercial distribution. It comes from DataCo Global, a UK-based consultancy company, that provides data and information management consultancy. This specific data set is publicly available for supply chain projects and is well documented.
+
 
 \section{Data Extraction}
 This will cover the exact method that was used to extract the data, whether I call it from a .py file and pull it directly in the way I need it, or I simply download it by hand and move it to the exact project file. It is simple, but vitally important should you want to recreate the project
