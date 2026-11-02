@@ -165,14 +165,14 @@ Transformation will be the initial setup of our data and we should ideally manip
 
     \begin{lstlisting}[language=Python, caption={Data preprocessing, type casting, and targeted cleaning}]
 
-    # 1. Load the DataCo Supply Chain dataset
+    # Load the DataCo Supply Chain dataset
     df = kagglehub.dataset_load(
         KaggleDatasetAdapter.PANDAS,
         "shashwatwork/dataco-smart-supply-chain-for-big-data-analysis",
         "DataCoSupplyChainDataset.csv",
     )
 
-    # 2. Define critical columns needed for target and ML features
+    # Define critical columns needed for target and ML features
     critical_cols = [
         'Shipping Mode', 
         'shipping date (DateOrders)', 
@@ -182,15 +182,15 @@ Transformation will be the initial setup of our data and we should ideally manip
         'Days for shipping (real)'  # Target variable
     ]
 
-    # 3. Drop rows with missing values strictly within critical columns
+    # Drop rows with missing values strictly within critical columns
     df = df.dropna(subset=critical_cols)
 
-    # 4. Explicit Type Casting (Datetime Conversion)
+    # Explicit Type Casting (Datetime Conversion)
     date_cols = ['order date (DateOrders)', 'shipping date (DateOrders)']
     for col in date_cols:
         df[col] = pd.to_datetime(df[col])
 
-    # 5. Type Casting Categorical Columns
+    # Type Casting Categorical Columns
     cat_cols = [
         'Shipping Mode', 
         'Order Country', 
@@ -202,6 +202,27 @@ Transformation will be the initial setup of our data and we should ideally manip
     df[cat_cols] = df[cat_cols].astype('category')
     \end{lstlisting}
 
+    We will perform some basic feature engineering now that we done some basic normalization of the dataset. Feature engineering for ML will allow us to test different types of ML algorithms. Most standard Skikit-Learn models cannot use categorical variables so we need to engineer a column so that they are categorical. Examples of the Scikit-Learn models that we might use are regression, random forest, and decision trees. ML models that I have not explicitly used but that can take categorical variables natively are modles that convert them to integers on the fly such as LightGBM or CatBoost. We will not be using or testing either of these for this project.
+
+    We will show an example of turning the variable 'Shipping Mode' into an ordinal variable rather than categorical but we can apply the same method to all categorical variables. Turning categorical data into ordinal data does have some rules such as importance where the relationship is meaningful. \cite{GeeksforGeeks1} In the below case, we assigned it based on priority.
+
+    \begin{lstlisting}[language=Python, caption={Ordinal encoding of Shipping Mode based on delivery priority}]
+    # Define ordinal ranking dictionary (higher number = faster priority)
+    shipping_mode_order = {
+        'Standard Class': 1,
+        'Second Class': 2,
+        'First Class': 3,
+        'Same Day': 4
+    }
+
+    # Apply ordinal mapping to create a new engineered feature
+    df['Shipping_Mode_Ordinal'] = df['Shipping Mode'].map(shipping_mode_order)
+
+    # Verify mapping result
+    print(df[['Shipping Mode', 'Shipping_Mode_Ordinal']].drop_duplicates())
+    \end{lstlisting}
+
+    As an important note, we have explicitly said "ordinal" but categorical data can also be turned into "nominal" where the priority or importance does not matter. SciKit also comes with some built in encoders to transform items for us should we not want to assign every variable ourselves. \cite{ScikitlearnOrdinalEncoder}
 
 \section{Data Loading}
 This will cover what I loaded my data into, whether I work directly from a .csv file or choose to load it to SQL or some other database. This choice should also be documented and there should be some rationale behind it.
