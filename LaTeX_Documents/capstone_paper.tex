@@ -225,7 +225,35 @@ Transformation will be the initial setup of our data and we should ideally manip
     As an important note, we have explicitly said "ordinal" but categorical data can also be turned into "nominal" where the priority or importance does not matter. SciKit also comes with some built in encoders to transform items for us should we not want to assign every variable ourselves. \cite{ScikitlearnOrdinalEncoder}
 
 \section{Data Loading}
-This will cover what I loaded my data into, whether I work directly from a .csv file or choose to load it to SQL or some other database. This choice should also be documented and there should be some rationale behind it.
+STILL WORKING OUT KINKS
+
+Data loading is our final step where we can take all transformations and keep them in a static state that we can then train our ML model on our interact with how we see fit. We will be using DuckDB given that it has seamless integration with pandas dataframes which allows us to embed it directly into DuckDB for a serverless layer. This should help us in end web deployment with streamlit.
+
+    We will first need to create the DuckDB database. This is a relational database \cite{}
+
+    \begin{lstlisting}[language=Python, caption={ETL Loading Phase: DuckDB Database Creation}]
+    db_path = "dataco_supply_chain.db"
+    \end{lstlisting}
+
+    Then we can make our connection to the DuckDB database and load in our dataframe.
+
+    \begin{lstlisting}[language=Python, caption={ETL Loading Phase: Ingestion into DuckDB}]
+
+    # Establish a connection to a local DuckDB database file 
+    # (Use ':memory:' for an in-memory database instance)
+    con = duckdb.connect('dataco_supply_chain.duckdb')
+
+    # Register and load the cleaned Pandas DataFrame into DuckDB as a table
+    # DuckDB directly queries and ingests Pandas DataFrames without disk I/O overhead
+    con.execute("CREATE OR REPLACE TABLE supply_chain_events AS SELECT * FROM df")
+
+    # Verify successful table creation and record counts
+    row_count = con.execute("SELECT COUNT(*) FROM supply_chain_events").fetchone()[0]
+    print(f"Successfully loaded {row_count:,} records into DuckDB table 'supply_chain_events'.")
+
+    # Close the connection when done - This is not necessary but good practice
+    con.close()
+    \end{lstlisting}
 
 \section{ML Model Training}
 This will cover how I trained the machine learning model, the type of model, how it was trained, the rationale for the model chosen, and whether or not there are limitations to my choice and rationale
