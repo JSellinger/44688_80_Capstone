@@ -37,13 +37,6 @@ ENV/
 logs/
 *.log
 
-# ==========================================
-# Database & Local Data Storage
-# ==========================================
-*.db
-*.sqlite
-*.wal
-data/inventory_warehouse.db
 
 # ==========================================
 # VS Code / OS Artifacts
