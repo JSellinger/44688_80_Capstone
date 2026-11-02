@@ -64,11 +64,16 @@ To account for lead time variability ($\sigma_L$) and demand variability ($\sigm
 Where $\bar{d}$ represents average daily demand, $\bar{L}$ is the predicted mean lead time, and $Z$ corresponds to the target service level factor.
 
 \section{Dataset}
-The data set that will be used in this project is version 5 of the \textit{DataCo SMART SUPPLY CHAIN FOR BIG DATA ANALYSIS} from Mendeley Data. \cite{dataco2019} This data set is a comprehensive supply chain data set that covers procurement, production, sales, and commercial distribution. It comes from DataCo Global, a UK-based consultancy company, that provides data and information management consultancy. This specific data set is publicly available for supply chain projects and is well documented.
+The dataset that will be used in this project is version 5 of the \textit{DataCo SMART SUPPLY CHAIN FOR BIG DATA ANALYSIS} from Mendeley Data. \cite{dataco2019} This data set is a comprehensive supply chain data set that covers procurement, production, sales, and commercial distribution. It comes from DataCo Global, a UK-based consultancy company, that provides data and information management consultancy. This specific data set is publicly available for supply chain projects and is well documented, which allows easy implementation.
+
+
+    This paper will use the standard ETL, as opposed to ELT, and follow the basic steps: Extract, Transofrm, and Load. ETL will be easier to load to our database and keep the project manageable by mitigating scale and complexity. It also allows us to cleanly normalize our data, even though we are already using a structured data set, we will still want to do basic transformations and drop any unnecessary columns or rows.
 
 
 \section{Data Extraction}
-This will cover the exact method that was used to extract the data, whether I call it from a .py file and pull it directly in the way I need it, or I simply download it by hand and move it to the exact project file. It is simple, but vitally important should you want to recreate the project
+Extraction requires us to pull the data from a non-local source, in this case we will be pulling from kaggle using the kaggle API given that it is well documented and easy to use, while demonstrating rudimentary knowledge of the API calls and non-local extraction. 
+
+    The main language this paper will use is Python which gives further credence to using the kaggle API, kagglehub, to build a module that is dataset agnostic and can be used as needed in the future for any kaggle datasets. It is already designed to work seamlessly in Python NML workflows and it is free to create personal API Tokens. \cite{kagglehubAPI} 
 
 \section{Data Transformation}
 This will cover all transformations and the rationale behind the transformations - should I inject null values rather than dropping rows with null values, I should have a valid reason for the decisions and document it whether right or wrong
