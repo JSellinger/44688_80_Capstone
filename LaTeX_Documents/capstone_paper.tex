@@ -1,9 +1,15 @@
+
+% --- Begin Preamble ---
 \documentclass[runningheads]{llncs}
 
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb} % Added for mathematical formulas
-\usepackage{hyperref}
+\usepackage{xcolor} %Added colors
+\usepackage{hyperref} %Added url
+\usepackage{url} %Added sencodary handling for url in case I am stupid
 \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+% --- End Preamble ---
 
 \begin{document}
 
@@ -73,7 +79,9 @@ The dataset that will be used in this project is version 5 of the \textit{DataCo
 \section{Data Extraction}
 Extraction requires us to pull the data from a non-local source, in this case we will be pulling from kaggle using the kaggle API given that it is well documented and easy to use, while demonstrating rudimentary knowledge of the API calls and non-local extraction. 
 
-    The main language this paper will use is Python which gives further credence to using the kaggle API, kagglehub, to build a module that is dataset agnostic and can be used as needed in the future for any kaggle datasets. It is already designed to work seamlessly in Python NML workflows and it is free to create personal API Tokens. \cite{kagglehubAPI} 
+    The main coding language used in this paper will be Python which gives further credence to using the kaggle API, kagglehub. This will help build a modular pipeline that is dataset agnostic and can be used as needed in the future for any kaggle datasets. The API is already designed to work seamlessly in Python NML workflows and it is free to create personal API Tokens. \cite{kagglehubdoc} 
+
+    We will use 
 
 \section{Data Transformation}
 This will cover all transformations and the rationale behind the transformations - should I inject null values rather than dropping rows with null values, I should have a valid reason for the decisions and document it whether right or wrong
