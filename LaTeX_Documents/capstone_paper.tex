@@ -111,12 +111,19 @@ The dataset that will be used in this project is version 5 of the \textit{DataCo
 \section{Data Extraction}
 Extraction requires us to pull the data from a non-local source, in this case we will be pulling from kaggle using the kaggle API given that it is well documented and easy to use, while demonstrating rudimentary knowledge of the API calls and non-local extraction. 
 
-    The main coding language used in this paper will be Python which gives further credence to using the kaggle API, kagglehub. This will help build a modular pipeline that is dataset agnostic and can be used as needed in the future for any kaggle datasets. The API is already designed to work seamlessly in Python NML workflows and it is free to create personal API Tokens. \cite{kagglehubdoc} 
+    The main coding language used in this paper will be Python which gives further credence to using the kaggle API, kagglehub. This will help build a modular pipeline that is dataset agnostic and can be used as needed in the future for any kaggle datasets. The API is already designed to work seamlessly in Python NML workflows and it is free to create personal API Tokens. \cite{kagglehubdata} 
 
     To create a manageable and more thorough documentation we will use \lstinline|uv| to add all dependencies and packages for this project.
 
     \begin{lstlisting}[language=bash, caption={Adding kagglehub with uv}]
+
+    #uv add kaggle hub
     uv add kagglehub
+
+    #examples of other added dependencies, please refer to the uv lock or README for all
+    uv add pandas
+    uv add sci-kit
+    uv add skilearn
     \end{lstlisting}
 
     Once installed, we will load the dataset directly to a Pandas DataFrame. The documentation on kaggle gives a good overview of how to perform this, we will be slightly modifying kaggle's example to handle.
@@ -135,7 +142,66 @@ Extraction requires us to pull the data from a non-local source, in this case we
 
 
 \section{Data Transformation}
-This will cover all transformations and the rationale behind the transformations - should I inject null values rather than dropping rows with null values, I should have a valid reason for the decisions and document it whether right or wrong
+Transformation will be the initial setup of our data and we should ideally manipulate the data in such a way that it is read to load into our database or be directly used in our ML pipeline. Transformation is less important when working with small datasets, as we are less limited by memory or CPU bottlenecks, hence why the entire dataset will be loaded. If we had pursued an ELT method we could have pulled in only what we needed and then manipulated it but for visibility into the reasoning for certain transformations, choices, and better data exploration we are making a deliberate choice to do pull the entire dataset and perform transformations on the entire set or as needed. Given that information we will perform minimal transformations beyond standard data cleaning and normalization by droppping missing critical values, which are those that we are using or targeting, explicitly type cast certain variables, and any feature engineering that may be necessary.
+
+    We will want to drop rows that are missing only non-critical values. For example, we are targeting lead time for our ML algorithm so we want to avoid dropping this unnecessarily or any of the attributes that we believe we might use. In this case, from my real world experience, we will likely use Shipping Mode, Shipping Date, Order City, Order Country, and Category\_ID are likely to help us train an ML model to predict Days for Shipping (real).\
+
+    \begin{lstlisting}[language=Python, caption={Dropping rows with missing values in key feature columns}]
+    # Define the critical columns needed for your ML model
+    critical_cols = [
+        'Shipping Mode', 
+        'shipping date (DateOrders)', 
+        'Order City', 
+        'Order Country', 
+        'Category Id', 
+        'Days for shipping (real)'  # Your target variable
+    ]
+
+    # Drop rows missing values in ANY of these key attributes
+    df = df.dropna(subset=critical_cols)
+    \end{lstlisting}
+
+    After dropping critical rows that have null values we will want to type set anything so that everything is normalized. For example, dates and times are passed as strings instead of true date times so we will need to type set shipping date (DateOrders)
+
+    \begin{lstlisting}[language=Python, caption={Data preprocessing, type casting, and targeted cleaning}]
+
+    # 1. Load the DataCo Supply Chain dataset
+    df = kagglehub.dataset_load(
+        KaggleDatasetAdapter.PANDAS,
+        "shashwatwork/dataco-smart-supply-chain-for-big-data-analysis",
+        "DataCoSupplyChainDataset.csv",
+    )
+
+    # 2. Define critical columns needed for target and ML features
+    critical_cols = [
+        'Shipping Mode', 
+        'shipping date (DateOrders)', 
+        'Order City', 
+        'Order Country', 
+        'Category Id', 
+        'Days for shipping (real)'  # Target variable
+    ]
+
+    # 3. Drop rows with missing values strictly within critical columns
+    df = df.dropna(subset=critical_cols)
+
+    # 4. Explicit Type Casting (Datetime Conversion)
+    date_cols = ['order date (DateOrders)', 'shipping date (DateOrders)']
+    for col in date_cols:
+        df[col] = pd.to_datetime(df[col])
+
+    # 5. Type Casting Categorical Columns
+    cat_cols = [
+        'Shipping Mode', 
+        'Order Country', 
+        'Order City', 
+        'Category Id', 
+        'Type', 
+        'Delivery Status'
+    ]
+    df[cat_cols] = df[cat_cols].astype('category')
+    \end{lstlisting}
+
 
 \section{Data Loading}
 This will cover what I loaded my data into, whether I work directly from a .csv file or choose to load it to SQL or some other database. This choice should also be documented and there should be some rationale behind it.
