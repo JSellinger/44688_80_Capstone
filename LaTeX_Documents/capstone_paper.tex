@@ -3,6 +3,8 @@
 \documentclass[runningheads]{llncs}
 
 \usepackage{graphicx}
+
+\usepackage{comment}
 \usepackage{amsmath,amssymb} % Added for mathematical formulas
 \usepackage{xcolor} %Added colors
 \usepackage{hyperref} %Added url
@@ -89,7 +91,13 @@ WORK IN PROGRESS
 The system architecture consists of a three-stage pipeline: ingestion and cleaning (ETL), predictive lead time modeling, and interactive decision support...
 
 
-% ADD FIGURE HERE
+% ADD FIGURE HERE - not working
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{../figures/swim_lane_diagram_placeholder.png}
+  \caption{End-to-End Supply Chain Data Pipeline and Web Deployment Swimlane.}
+  \label{fig:swimlane_diagram}
+\end{figure}
 
 \section{Data Collection}
 
