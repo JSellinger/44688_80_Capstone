@@ -93,6 +93,7 @@ The system architecture consists of a three-stage pipeline: ingestion and cleani
 
 \section{Data Collection}
 
+
 \subsection{Dataset Overview}
 The dataset that will be used in this project is version 5 of the \textit{DataCo SMART SUPPLY CHAIN FOR BIG DATA ANALYSIS} from Mendeley Data. \cite{dataco2019} This data set is a comprehensive supply chain data set that covers procurement, production, sales, and commercial distribution. It comes from DataCo Global, a UK-based consultancy company, that provides data and information management consultancy. This specific data set is publicly available for supply chain projects and is well documented, which allows easy implementation.
 
@@ -100,8 +101,8 @@ The dataset that will be used in this project is version 5 of the \textit{DataCo
     This paper will use the standard ETL, as opposed to ELT, and follow the basic steps: Extract, Transofrm, and Load. ETL will be easier to load to our database and keep the project manageable by mitigating scale and complexity. It also allows us to cleanly normalize our data, even though we are already using a structured data set, we will still want to do basic transformations and drop any unnecessary columns or rows.
 
 
-\subsection{Data Collection}
-Collection, or extraction, requires us to pull the data from a non-local source, in this case we will be pulling from kaggle using the kaggle API given that it is well documented and easy to use, while demonstrating rudimentary knowledge of the API calls and non-local extraction. 
+\subsection{Data Extraction}
+Extraction requires us to pull the data from a non-local source, in this case we will be pulling from kaggle using the kaggle API given that it is well documented and easy to use, while demonstrating rudimentary knowledge of the API calls and non-local extraction. 
 
     The main coding language used in this paper will be Python which gives further credence to using the kaggle API, kagglehub. This will help build a modular pipeline that is dataset agnostic and can be used as needed in the future for any kaggle datasets. The API is already designed to work seamlessly in Python NML workflows and it is free to create personal API Tokens. \cite{kagglehubdata} 
 
@@ -197,6 +198,8 @@ Transformation will be the initial setup of our data and we should ideally manip
     df[cat_cols] = df[cat_cols].astype('category')
     \end{lstlisting}
 
+\subsection{Feature Engineering}
+
     We will perform some basic feature engineering now that we done some basic normalization of the dataset. Feature engineering for ML will allow us to test different types of ML algorithms. Most standard Skikit-Learn models cannot use categorical variables so we need to engineer a column so that they are categorical. Examples of the Scikit-Learn models that we might use are regression, random forest, and decision trees. ML models that I have not explicitly used but that can take categorical variables natively are modles that convert them to integers on the fly such as LightGBM or CatBoost. We will not be using or testing either of these for this project.
 
     We will show an example of turning the variable 'Shipping Mode' into an ordinal variable rather than categorical but we can apply the same method to all categorical variables. Turning categorical data into ordinal data does have some rules such as importance where the relationship is meaningful. \cite{GeeksforGeeks1} In the below case, we assigned it based on priority.
@@ -219,7 +222,7 @@ Transformation will be the initial setup of our data and we should ideally manip
 
     As an important note, we have explicitly said "ordinal" but categorical data can also be turned into "nominal" where the priority or importance does not matter. SciKit also comes with some built in encoders to transform items for us should we not want to assign every variable ourselves. \cite{ScikitlearnOrdinalEncoder}
 
-\section{Data Loading}
+\subsection{Data Loading}
 STILL WORKING OUT KINKS
 
 Data loading is our final step where we can take all transformations and keep them in a static state that we can then train our ML model on our interact with how we see fit. We will be using DuckDB given that it has seamless integration with pandas dataframes which allows us to embed it directly into DuckDB for a serverless layer. This should help us in end web deployment with streamlit.
@@ -251,9 +254,18 @@ Data loading is our final step where we can take all transformations and keep th
     \end{lstlisting}
 
 
-\section{Exploratory Data Analaysis}
+\section{Data Validation}
 
+Following pre-processing and persistence in DuckDB, we execute an automated data validation routine prior to model training. This step verifies data integrity, schema consistency, and matrix readiness directly from the database connection.
 
+\subsection{Post-Storage Verification}
+Check if pandas df was properly stored and persistent
+
+\subsection{Constraint and Attribute Type Checks}
+Check if attributes and variables, such as lead time and contractor, are in valid typesetting and feature engineered appropriately.
+
+\subsection{Matrix Integrity and Non-Null Guarantees}
+Quick check to ensure all zero, missing or null values were dropped and maintained in the database for training
 
 \section{Predictive Modeling: Random Forest Regression}
 
