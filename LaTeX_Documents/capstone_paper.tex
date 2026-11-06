@@ -162,7 +162,7 @@ Extraction requires us to pull the data from a non-local source, in this case we
 \subsection{Data Transformation}
 Transformation will be the initial setup of our data and we should ideally manipulate the data in such a way that it is read to load into our database or be directly used in our ML pipeline. Transformation is less important when working with small datasets, as we are less limited by memory or CPU bottlenecks, hence why the entire dataset will be loaded. If we had pursued an ELT method we could have pulled in only what we needed and then manipulated it but for visibility into the reasoning for certain transformations, choices, and better data exploration we are making a deliberate choice to do pull the entire dataset and perform transformations on the entire set or as needed. Given that information we will perform minimal transformations beyond standard data cleaning and normalization by droppping missing critical values, which are those that we are using or targeting, explicitly type cast certain variables, and any feature engineering that may be necessary.
 
-    We will want to drop rows that are missing only non-critical values. For example, we are targeting lead time for our ML algorithm so we want to avoid dropping this unnecessarily or any of the attributes that we believe we might use. In this case, from my real world experience, we will likely use Latitude, Longitude, Customer City, Customer Country, order date (DateOrders), Order Item Total, Product Category Id, Shipping Mode are likely to help us train an ML model to predict Days for Shipping (real).\
+    We will want to drop rows that are missing only non-critical values. For example, we are targeting lead time for our ML algorithm so we want to avoid dropping this unnecessarily or any of the attributes that we believe we might use. In this case, from my real world experience, we will likely use Latitude, Longitude, Order City, Order Country, order date (DateOrders), Order Item Quantity, Product Category Id, Shipping Mode are likely to help us train an ML model to predict Days for Shipping (real).\
 
     \begin{lstlisting}[language=Python, caption={Dropping rows with missing values in key feature columns}]
     def select_target_columns(df: pd.DataFrame, target_cols: list[str] = None) -> pd.DataFrame:
@@ -173,10 +173,10 @@ Transformation will be the initial setup of our data and we should ideally manip
             target_cols = [
                 'Latitude',
                 'Longitude',
-                'Customer City',
-                'Customer Country',
+                'Order City',
+                'Order Country',
                 'order date (DateOrders)',
-                'Order Item Total',
+                'Order Item Quantity',
                 'Product Category Id',
                 'Shipping Mode',
                 'Days for shipping (real)'  # Target variable included
