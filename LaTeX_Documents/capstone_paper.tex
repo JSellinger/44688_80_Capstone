@@ -256,6 +256,53 @@ Transformation will be the initial setup of our data and we should ideally manip
 
     As an important note, we have explicitly said "ordinal" but categorical data can also be turned into "nominal" where the priority or importance does not matter. SciKit also comes with some built in encoders to transform items for us should we not want to assign every variable ourselves. \cite{ScikitlearnOrdinalEncoder}
 
+    \subsubsection{Exploratory Data Analysis of Feature Selection}
+
+    The initial candidate attributes were selected based on domain intuition and prior experience, but they require statistical validation to confirm significant, consistent relationships with actual shipping duration (\texttt{Days for shipping (real)}). To prevent data leakage, the validation workflow followed four sequential steps:
+
+    \begin{enumerate}
+        \item \textbf{Train--Test Split:} Partition the cleaned dataset into training (80\%) and testing (20\%) splits \textit{prior} to applying any target-dependent transformations.
+        \item \textbf{Feature Engineering:} Fit ordinal mappings, frequency maps, and cross-validated target encoders strictly on the training set, then apply those learned parameters to the test set.
+        \item \textbf{Spearman Rank Correlation:} Compute Spearman's rank correlation coefficient ($\rho$) and associated $p$-values across all engineered features on both splits to measure monotonic relationship strength without assuming normality.
+        \item \textbf{Dimensionality Pruning:} Retain only features demonstrating statistically significant ($p < 0.05$) and stable correlations across both datasets to minimize storage overhead in DuckDB.
+    \end{enumerate}
+
+    As illustrated in Figure~\ref{fig:train_vs_test_corr} and detailed in Table~\ref{tab:spearman_summary}, only three engineered features exhibited statistically significant relationships across both splits: \texttt{Shipping\_Mode\_Tier} ($\rho_{\text{test}} = 0.5028$), \texttt{Order City\_TargetEnc} ($\rho_{\text{test}} = 0.1924$), and \texttt{Order Country\_TargetEnc} ($\rho_{\text{test}} = 0.0210$). The remaining nine candidate features showed near-zero correlation and failed to generalize out-of-sample, allowing them to be safely pruned prior to DuckDB ingestion and Random Forest modeling.
+
+    \begin{figure}[!htbp]
+        \centering
+        \includegraphics[width=0.85\textwidth]{../figures/feature_selection_chart.png}
+        \caption{Spearman rank correlation ($\rho$) stability between training and test splits across all candidate features.}
+        \label{fig:train_vs_test_corr}
+    \end{figure}
+
+%Table%
+
+    \begin{table}[!htbp]
+        \centering
+        \caption{Spearman Rank Correlation and Feature Pruning Summary (Train vs.\ Test)}
+        \label{tab:spearman_summary}
+        \begin{tabular}{lcccccl}
+            \toprule
+            \textbf{Feature} & \textbf{Train $\rho$} & \textbf{Test $\rho$} & \textbf{$|\Delta \rho|$} & \textbf{Train $p$} & \textbf{Test $p$} & \textbf{Decision} \\
+            \midrule
+            \texttt{Shipping\_Mode\_Tier} & $+0.4996$ & $+0.5028$ & $0.0032$ & $<0.001$ & $<0.001$ & \textbf{Keep} \\
+            \texttt{Order City\_TargetEnc} & $+0.1794$ & $+0.1924$ & $0.0129$ & $<0.001$ & $<0.001$ & \textbf{Keep} \\
+            \texttt{Order Country\_TargetEnc} & $+0.0260$ & $+0.0210$ & $0.0050$ & $<0.001$ & $<0.001$ & \textbf{Keep} \\
+            \midrule
+            \texttt{Latitude} & $-0.0001$ & $-0.0123$ & $0.0122$ & $0.9754$ & $0.0194$ & Drop \\
+            \texttt{Longitude} & $-0.0011$ & $+0.0110$ & $0.0121$ & $0.6723$ & $0.0371$ & Drop \\
+            \texttt{Product Category Id\_Freq} & $+0.0028$ & $-0.0087$ & $0.0115$ & $0.2873$ & $0.0995$ & Drop \\
+            \texttt{Order City\_Freq} & $-0.0035$ & $-0.0074$ & $0.0039$ & $0.1847$ & $0.1611$ & Drop \\
+            \texttt{Product Category Id\_TargetEnc} & $+0.0014$ & $-0.0039$ & $0.0053$ & $0.5975$ & $0.4589$ & Drop \\
+            \texttt{Order Country\_Freq} & $+0.0025$ & $+0.0036$ & $0.0011$ & $0.3344$ & $0.4934$ & Drop \\
+            \texttt{Order Item Quantity} & $-0.0014$ & $+0.0036$ & $0.0050$ & $0.5999$ & $0.4939$ & Drop \\
+            \texttt{Order\_DayOfWeek} & $-0.0033$ & $-0.0034$ & $0.0000$ & $0.2090$ & $0.5239$ & Drop \\
+            \texttt{Order\_Month} & $-0.0096$ & $-0.0009$ & $0.0087$ & $<0.001$ & $0.8613$ & Drop \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+ 
 \subsection{Data Loading}
 STILL WORKING OUT KINKS
 
