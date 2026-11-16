@@ -16,6 +16,9 @@
 
 \usepackage{listings} %Added for code blocks
 
+\usepackage{amsmath}
+\usepackage{booktabs}
+
 % Configure code block appearance with RGB
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -267,13 +270,13 @@ Transformation will be the initial setup of our data and we should ideally manip
         \item \textbf{Dimensionality Pruning:} Retain only features demonstrating statistically significant ($p < 0.05$) and stable correlations across both datasets to minimize storage overhead in DuckDB.
     \end{enumerate}
 
-    As illustrated in Figure~\ref{fig:train_vs_test_corr} and detailed in Table~\ref{tab:spearman_summary}, only three engineered features exhibited statistically significant relationships across both splits: \texttt{Shipping\_Mode\_Tier} ($\rho_{\text{test}} = 0.5028$), \texttt{Order City\_TargetEnc} ($\rho_{\text{test}} = 0.1924$), and \texttt{Order Country\_TargetEnc} ($\rho_{\text{test}} = 0.0210$). The remaining nine candidate features showed near-zero correlation and failed to generalize out-of-sample, allowing them to be safely pruned prior to DuckDB ingestion and Random Forest modeling.
+    As illustrated in Figure~\ref{fig:train_vs_test_correlation} and detailed in Table~\ref{tab:spearman_summary}, only three engineered features exhibited statistically significant relationships across both splits: \texttt{Shipping\_Mode\_Tier} ($\rho_{\text{test}} = 0.5028$), \texttt{Order City\_TargetEnc} ($\rho_{\text{test}} = 0.1924$), and \texttt{Order Country\_TargetEnc} ($\rho_{\text{test}} = 0.0210$). The remaining nine candidate features showed near-zero correlation and failed to generalize out-of-sample, allowing them to be safely pruned prior to DuckDB ingestion and Random Forest modeling.
 
     \begin{figure}[!htbp]
         \centering
-        \includegraphics[width=0.85\textwidth]{../figures/feature_selection_chart.png}
+        \includegraphics[width=0.85\textwidth]{../figures/train_vs_test_correlation.png}
         \caption{Spearman rank correlation ($\rho$) stability between training and test splits across all candidate features.}
-        \label{fig:train_vs_test_corr}
+       \label{fig:train_vs_test_correlation}
     \end{figure}
 
 %Table%
